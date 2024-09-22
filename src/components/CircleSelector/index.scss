@@ -1,0 +1,31 @@
+@import "../../theme/variables.scss";
+
+.container {
+  width: 100%;
+  max-width: 530px;
+  aspect-ratio: 1/1;
+  max-height: 530px;
+  display: flex;
+}
+.circle {
+  max-height: 100%;
+  aspect-ratio: 1/1;
+  border: 1px solid rgba($dark-color, 0.1);
+  border-radius: 50%;
+  position: relative;
+}
+
+.item {
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 50%;
+}
+
+.inner {
+  position: relative;
+  z-index: 999;
+}

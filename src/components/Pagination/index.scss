@@ -1,0 +1,67 @@
+@import "../../theme/variables.scss";
+
+.pagination {
+  position: relative;
+  display: flex;
+  align-items: center;
+  
+  &__inner{
+  $min-gap: 9px;
+  display: flex;
+  flex-direction: column;
+  min-width: fit-content;
+  max-width: 120px;
+  width: 10%;
+  justify-content: space-between;
+  gap: clamp(8px, 3vw, 21px);
+}
+
+  &__progress {
+    font-size: 14px;
+  }  
+
+  &__mobile-progress {
+    display: none;
+    position: absolute; 
+    &-marker {
+      height: 6px;
+      width: 6px;
+      border-radius: 50%;
+      background-color: rgba($dark-color, .4);
+      transition: background-color .4s ease;
+      &_active {
+        background-color: $dark-color;
+      }
+    } 
+  }
+
+  .pagination__button {
+    max-width: 50px;
+  }
+
+  &__arrow{
+    max-height: 12.5px;
+    min-height: 6.25;
+    height: 40%;
+    stroke: $dark-color;
+    stroke-width: 2px;
+    &_to-right {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__control {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  @media (max-width: $small-tablet){
+    &__mobile-progress{
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+  }
+}

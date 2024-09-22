@@ -1,0 +1,73 @@
+@import "../../../theme/variables.scss";
+
+.events-swiper {
+    position: relative;
+
+  &__period-name {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba($dark-color, 0.1);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__slide {
+    max-width: 360px !important;
+    cursor: grab;
+    &:not(:last-child) {
+      margin-right: clamp(20px, 5vw, 80px);
+    }
+  }
+
+  @media(max-width: 576px) {
+
+    &__swiper {
+      max-width: 100%;
+      overflow: visible !important;
+    }
+
+    &__slide {
+      max-width: clamp(70%, 50vw, 160px) !important;
+      opacity: .5;
+    }
+
+    .swiper-slide-active {
+      opacity: 1;
+    }
+  }
+
+  &__nav-btn {
+    background-color: #fff;
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    z-index: 100;
+    top: 40px;
+    border: none;
+    box-shadow: 0 0 12px 0 rgba($main-color, .1);
+
+    &-arrow {
+      width: 8px;
+      max-height: 15px;
+      stroke: $main-color;
+      stroke-width: 2px;
+    }
+
+    &_next {
+      transform: rotate(180deg);
+      right: -60px;
+    }
+
+    &_prev {
+      left: -60px;
+    }
+
+    &_disabled {
+      display: none;
+    }
+
+    @media(max-width: 769px) {
+      display: none;
+    }
+  }
+}

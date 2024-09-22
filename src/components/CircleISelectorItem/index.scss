@@ -1,0 +1,111 @@
+@import "../../theme/variables.scss";
+
+$activeBodySize: 56px;
+$activationTime: .35s;
+
+@mixin activeBody {
+  &::before{
+    height: $activeBodySize;
+    background-color: $background-color;
+  }
+  &>span {
+    opacity: 1;
+  }
+}
+
+.circle-selector-item {
+
+  display: flex;
+  align-items: center;
+
+  &__body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &::before {
+      position: absolute;
+      content: "";
+      height: 4px;
+      aspect-ratio: 1/1;
+      
+      border-radius: 50%;
+      border: 1px solid rgba($dark-color, .5);
+      background-color: $dark-color;
+  
+      transition: transform, background-color, $activationTime ease;
+    }
+
+    & > span {
+      position: absolute;
+      opacity: 0;
+    }
+
+    @media(hover: hover) {
+      &:hover {
+        @include activeBody
+      }
+    }
+  }
+
+  &__number {
+    position: absolute;
+    opacity: 0;
+  }
+
+  &__label {
+    font-size: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+    position: absolute;
+    left: calc(($activeBodySize/2) + 20px);
+    display: none;
+    opacity: 0;
+
+    animation: labelOut;
+    animation-duration: .35s;
+  }
+  
+  &_active {
+    .circle-selector-item__body{ 
+      @include activeBody;
+    }
+  }
+
+  &_active {
+    .circle-selector-item__label{
+      display: inline;
+      opacity: 1;
+      
+      animation: labelIn;
+      animation-duration: calc($activationTime + 1s)
+    }
+  }
+}
+
+@keyframes labelIn {
+  from {
+    display: inline;
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  to {
+    display: inline;
+    opacity: 1;
+  }
+}
+
+@keyframes labelOut {
+  from {
+    left: calc(($activeBodySize/2) + 20px);
+    display: inline;
+    opacity: 1;
+  }
+  to {
+    left: calc(($activeBodySize/2) * 1.5 + 17px);
+    opacity: 0;
+  }
+}

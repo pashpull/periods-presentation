@@ -1,0 +1,112 @@
+@import "../../theme/variables.scss";
+
+.presentation {
+  $padding: clamp(20px, 8vw,78px);
+  $gap: 96px;
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  max-height: 1080px;
+  min-height: 568px;
+  min-width: 320px;
+  height: 100dvh;
+  padding: $padding; 
+  overflow: hidden;
+  
+  &::before {
+    content: "  ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(90deg, rgba($dark-color, 0.1) 1px, transparent 1px),
+    linear-gradient(rgba($dark-color, 0.1) 1px, transparent 1px);
+    background-size: calc(50% - 0.5px) 56%;
+    background-position: bottom left;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  &__top {
+    margin-top: clamp(40px, 3vw,70px);
+    position: relative;
+
+    &::before {
+      content: " ";
+      left: calc($padding * (-1));
+      position: absolute;
+      height: 100%;
+      width: 5px;
+      background: linear-gradient($main-color, $second-accent-color);
+    }
+  }
+
+  &__title {
+    font-size: clamp(20px, 6vw, 56px);
+    line-height: 110%;
+    width: min-content
+  }
+
+  &__center-content{
+    position: absolute;
+    height: 88%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+  }
+
+  &__circle-wrapper{
+    position: relative;
+    width: clamp(380px, 29vw,530px);
+    height: clamp(320px, 58%,530px);
+    aspect-ratio: 1/1;
+    z-index: 100; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__years-wrapper {
+    position: absolute;
+  }
+
+  &__bottom {
+    height: 35%;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(40px, 5vw ,60px);
+  }
+
+  @media (max-width: 576px){
+
+    &::before {
+      display: none;
+    }
+
+    &__bottom {
+      flex-direction: column-reverse;
+      padding-top: 20px;
+      gap: 30px;
+    }
+
+    &__center-content{
+      height: 60%;
+    }
+
+    &__top::before {
+      display: none;
+    }
+  }
+}
+

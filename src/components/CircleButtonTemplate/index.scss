@@ -1,0 +1,27 @@
+@import "../../theme/variables.scss";
+
+.circle-button {
+  border: 1px solid rgba($dark-color, .5);
+  outline: none;
+  background-color: transparent;
+  height: 100%;
+  width: 100%;
+  min-width: 25px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color .4s ease;
+
+  &_disabled {
+    opacity: .5;
+  }
+
+  @media (hover:hover){
+    &:hover {
+      background-color: #fff;
+    }
+  }
+}
