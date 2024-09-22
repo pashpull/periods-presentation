@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+@import "./variables.scss";
+
+.App {
+  display: flex;
+  justify-content: center;
+  font-family: "PT Sans", sans-serif;
+  font-weight: 400;
+  color: $dark-color;
+  background-color: $background-color;
+}
+
