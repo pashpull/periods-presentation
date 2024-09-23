@@ -1,8 +1,9 @@
-import React, { memo, useCallback } from "react"
+import React from "react"
 import "./index.scss"
 
-import Arrow from "../../assets/arrow.svg"
 import { cn } from "../../utils/cn";
+
+import Arrow from "../../assets/arrow.svg"
 import { CircleButtonTemplate } from "../CircleButtonTemplate";
 
 interface IPagination {
@@ -11,22 +12,27 @@ interface IPagination {
   maxCount?: number;
   currentNumber?: number;
 }
-const MemoArrow = memo(({ className }: { className: string }) => <Arrow className={className} />)
 
 export const Pagination = ({ toNext, toPrev, maxCount, currentNumber }: IPagination) => {
 
   const showProgress = maxCount && currentNumber
 
+  const dis = currentNumber < 2
   return (
     <div className="pagination">
       {showProgress && <div className="pagination__mobile-progress">
-        {Array(maxCount).fill(' ').map((_, idx) => {
-          const className = cn([
-            "pagination__mobile-progress-marker",
-            currentNumber === idx + 1 && "pagination__mobile-progress-marker_active"
-          ])
-          return <div key={idx} className={className}></div>
-        })}
+        {
+          Array(maxCount).fill(' ').map((_, idx) => {
+
+            const baseClassName = "pagination__mobile-progress-marker"
+            const className = cn([
+              baseClassName,
+              currentNumber === idx + 1 && baseClassName + "_active"
+            ])
+
+            return <div key={idx} className={className}></div>
+          })
+        }
       </div>}
 
       <div className="pagination__inner">
@@ -40,17 +46,16 @@ export const Pagination = ({ toNext, toPrev, maxCount, currentNumber }: IPaginat
         }
 
         <div className="pagination__control">
-          <CircleButtonTemplate onClick={toPrev} disabled={currentNumber < 2} className="pagination__button">
-            <MemoArrow className="pagination__arrow" />
+          <CircleButtonTemplate onClick={toPrev} disabled={dis} className="pagination__button">
+            <Arrow className="pagination__arrow" />
           </CircleButtonTemplate>
 
           <CircleButtonTemplate onClick={toNext} disabled={currentNumber === maxCount} className="pagination__button">
-            <MemoArrow className="pagination__arrow pagination__arrow_to-right" />
+            <Arrow className="pagination__arrow pagination__arrow_to-right" />
           </CircleButtonTemplate>
         </div>
-
       </div >
-    </div >
 
+    </div >
   )
 }

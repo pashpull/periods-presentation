@@ -1,17 +1,18 @@
 import React, { memo } from "react"
 import "./index.scss"
-import { IHistoricalEvent } from "../types"
 
 interface IEventOfPeriod {
-  event: IHistoricalEvent
+  year: number;
+  description: string;
 }
 
-export const EventOfPeriod = memo(({ event }: IEventOfPeriod) => {
+export const EventOfPeriod = memo(({ year, description }: IEventOfPeriod) => {
+
   return (
     <div className="event">
-      <h3 className="event__title">{event.year}</h3>
+      <h3 className="event__title">{year}</h3>
       <p className="event__description">
-        {event.description}
+        {description}
       </p>
     </div>
   )

@@ -11,3 +11,9 @@ export interface IHistoricalPeriod {
   endDate: number;
   events: IHistoricalEvent[];
 }
+
+export interface IPeriodForCircle {
+  id: number;
+  title: string;
+  index: number;
+} 

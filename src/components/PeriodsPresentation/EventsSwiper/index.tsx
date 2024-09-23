@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react"
+import React, { forwardRef, memo, useCallback, useRef, useState } from "react"
 import "./index.scss"
 import 'swiper/css';
 
@@ -14,27 +14,26 @@ import { IHistoricalEvent } from "../types";
 gsap.registerPlugin(useGSAP);
 
 interface IEventListSwiperProps {
-  periodTitle?: string
+  swiperTitle?: string
   eventList: IHistoricalEvent[]
 }
 
-export const EventsSwiper = ({ eventList, periodTitle }: IEventListSwiperProps) => {
+export const EventsSwiper = ({ eventList, swiperTitle }: IEventListSwiperProps) => {
 
   const [currentData, setCurrentData] = useState<IEventListSwiperProps | null>(null)
+  const [btnsDisabled, setBtnsDisabled] = useState({ prev: true, next: false })
 
   const swiperWrapperRef = useRef(null)
   const swiperRef = useRef<SwiperRef>(null)
 
-  const [btnsDisabled, setBtnsDisabled] = useState({ prev: true, next: false })
-
-  const updateBtnsStatus = () => {
+  const updateBtnsStatus = useCallback(() => {
     const prevState = swiperRef.current.swiper.isBeginning
     const nextState = swiperRef.current.swiper.isEnd
     const stateChanged = btnsDisabled.next !== nextState || btnsDisabled.prev !== prevState
     if (stateChanged) {
       setBtnsDisabled(() => ({ prev: prevState, next: nextState }))
     }
-  }
+  }, [btnsDisabled])
 
   const handleNextBtn = useCallback(() => {
     if (!swiperRef.current) return
@@ -50,16 +49,16 @@ export const EventsSwiper = ({ eventList, periodTitle }: IEventListSwiperProps) 
 
   useGSAP(() => {
     if (currentData === null) {
-      setCurrentData({ eventList, periodTitle })
+      setCurrentData({ eventList, swiperTitle })
       return
     }
     gsap.to(swiperWrapperRef.current, {
       opacity: 0, onComplete: () => {
-        setCurrentData({ eventList, periodTitle })
+        setCurrentData({ eventList, swiperTitle })
         swiperRef.current.swiper.slideTo(0, 0)
       }
     })
-  }, { dependencies: [eventList, periodTitle], scope: swiperWrapperRef })
+  }, { dependencies: [eventList, swiperTitle], scope: swiperWrapperRef })
 
   useGSAP(() => {
     gsap.fromTo(swiperWrapperRef.current, { opacity: 0, y: 10 }, {
@@ -69,26 +68,36 @@ export const EventsSwiper = ({ eventList, periodTitle }: IEventListSwiperProps) 
 
   return (
     <div className="events-swiper" ref={swiperWrapperRef}>
-      {currentData?.periodTitle && <p className="events-swiper__period-name">{currentData?.periodTitle}</p>}
+      {currentData?.swiperTitle && <p className="events-swiper__period-name">{currentData?.swiperTitle}</p>}
 
       <SwiperNavButton onClick={handlePrevBtn} type="prev" isDisabled={btnsDisabled.prev} />
       <SwiperNavButton onClick={handleNextBtn} type="next" isDisabled={btnsDisabled.next} />
 
-      <Swiper
-        onSlideChange={updateBtnsStatus}
-        ref={swiperRef}
-        slidesPerView={"auto"}
-        className={"mySwiper" + " events-swiper__swiper"}
-      >
-        {
-          currentData?.eventList.map((event: IHistoricalEvent) => (
-            <SwiperSlide key={event.id + event.description} className="events-swiper__slide">
-              <EventOfPeriod event={event} />
-            </SwiperSlide>
-          )
-          )
-        }
-      </Swiper>
+      {currentData?.eventList && <MemoizedSwiper ref={swiperRef} onSlideChange={updateBtnsStatus} eventList={currentData.eventList} />}
+
     </div >
   )
 }
+
+interface IEventsSwiper {
+  onSlideChange: () => void;
+  eventList: IHistoricalEvent[]
+}
+
+const MemoizedSwiper = memo(forwardRef<SwiperRef, IEventsSwiper>(({ onSlideChange, eventList }: IEventsSwiper, ref) => (
+  <Swiper
+    onSlideChange={onSlideChange}
+    ref={ref}
+    slidesPerView={"auto"}
+    className={"mySwiper" + " events-swiper__swiper"}
+  >
+    {
+      eventList.map((event: IHistoricalEvent) => (
+        <SwiperSlide key={event.id + event.description} className="events-swiper__slide">
+          <EventOfPeriod year={event.year} description={event.description} />
+        </SwiperSlide>
+      )
+      )
+    }
+  </Swiper>
+)))
